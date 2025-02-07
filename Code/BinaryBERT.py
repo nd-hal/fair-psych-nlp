@@ -88,7 +88,11 @@ def training_run(task, fold):
         test_df.to_csv(f"./Results/{task}_{fold}.csv")
 
 
-fold = 1
-task = "Anxiety"
-training_run(task, fold)
+
+folds = [1,2,3,4,5]
+tasks = ["Anxiety", "Numeracy", "SubjectiveLit", "TrustPhys"]
+
+for task in tasks:
+    for fold in folds:
+        training_run(task, fold)
 
