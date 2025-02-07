@@ -28,19 +28,16 @@ def training_run(task, fold):
     eval_ds = Dataset.from_pandas(eval_df, split="train")
     test_df = pd.read_csv(f"./Data/MedianCV/{fold}/{task}_test.txt", sep='\t', names=["label","text"]).dropna()
     test_df["label"] = test_df["label"].replace({-1:0})
-    test_ds = Dataset.from_pandas(test_df, split="test")
+    #test_ds = Dataset.from_pandas(test_df, split="test")
 
     tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
     def tokenize_function(examples):
         return tokenizer(examples["text"], padding="max_length", truncation=True)
-    def tokenizeTest(examples):
-        return tokenizer(examples["text"], return_tensors="pt", padding="max_length", truncation=True)
 
     train_ds = train_ds.map(tokenize_function, batched=True)
     eval_ds = eval_ds.map(tokenize_function, batched=True)
-    test_ds = test_ds.map(tokenizeTest, batched=True)
 
     id2label = {0: "NEGATIVE", 1: "POSITIVE"}
 
@@ -79,10 +76,16 @@ def training_run(task, fold):
     trainer.train()
 
     with torch.no_grad():
-        logits = model(**test_ds).logits
-        predicted_class_id = logits.argmax(dim=1).item()
-        for p in predicted_class_id:
-            print(model.config.id2label[p])
+        test_texts = test_df["text"]
+        test_preds = []
+        for text in test_texts:
+            inputs = tokenizer(text, return_tensors="pt")
+            logits = model(**inputs).logits
+            predicted_class_id = logits.argmax(dim=1).item()
+            pred = model.config.id2label[predicted_class_id]
+            test_preds.append(pred)
+        test_df["preds"] = test_preds
+        test_df.to_csv(f"./Results/{task}_{fold}.csv")
 
 
 fold = 1
