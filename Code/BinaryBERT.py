@@ -35,11 +35,12 @@ def training_run(task, fold):
 
     def tokenize_function(examples):
         return tokenizer(examples["text"], padding="max_length", truncation=True)
-
+    def tokenizeTest(examples):
+        return tokenizer(examples["text"], return_tensors="pt", padding="max_length", truncation=True)
 
     train_ds = train_ds.map(tokenize_function, batched=True)
     eval_ds = eval_ds.map(tokenize_function, batched=True)
-    test_ds = test_ds.map(tokenize_function, batched=True)
+    test_ds = test_ds.map(tokenizeTest, batched=True)
 
     id2label = {0: "NEGATIVE", 1: "POSITIVE"}
 
