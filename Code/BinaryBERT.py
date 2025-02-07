@@ -79,7 +79,7 @@ def training_run(task, fold):
         test_texts = test_df["text"]
         test_preds = []
         for text in test_texts:
-            inputs = tokenizer(text, return_tensors="pt")
+            inputs = tokenizer(text, padding="max_length", truncation=True, return_tensors="pt")
             inputs = inputs.to("cuda")
             logits = model(**inputs).logits
             pred = logits.argmax(dim=1).item()
@@ -89,8 +89,10 @@ def training_run(task, fold):
 
 
 
-folds = [1,2,3,4,5]
-tasks = ["Anxiety", "Numeracy", "SubjectiveLit", "TrustPhys"]
+#folds = [1,2,3,4,5]
+#tasks = ["Anxiety", "Numeracy", "SubjectiveLit", "TrustPhys"]
+folds = [2,3,4,5]
+tasks = ["TrustPhys"]
 
 for task in tasks:
     for fold in folds:
