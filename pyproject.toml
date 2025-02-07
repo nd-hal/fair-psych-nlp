@@ -1,0 +1,21 @@
+[project]
+name = "fair-psych-nlp"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "John Lalor",email = "john.lalor@nd.edu"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas (>=2.2.3,<3.0.0)",
+    "datasets (>=3.2.0,<4.0.0)",
+    "transformers (>=4.48.2,<5.0.0)",
+    "evaluate (>=0.4.3,<0.5.0)",
+    "accelerate (>=1.3.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
