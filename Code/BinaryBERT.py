@@ -81,7 +81,8 @@ def training_run(task, fold):
         logits = model(**test_ds).logits
         predicted_class_id = logits.argmax(dim=1).item()
         for p in predicted_class_id:
-            print(model.config.id2label[predicted_class_id])
+            print(model.config.id2label[p])
+
 
 fold = 1
 task = "Anxiety"
