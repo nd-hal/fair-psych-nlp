@@ -80,9 +80,9 @@ def training_run(task, fold):
         test_preds = []
         for text in test_texts:
             inputs = tokenizer(text, return_tensors="pt")
+            inputs = inputs.to("cuda")
             logits = model(**inputs).logits
-            predicted_class_id = logits.argmax(dim=1).item()
-            pred = model.config.id2label[predicted_class_id]
+            pred = logits.argmax(dim=1).item()
             test_preds.append(pred)
         test_df["preds"] = test_preds
         test_df.to_csv(f"./Results/{task}_{fold}.csv")
