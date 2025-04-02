@@ -1,6 +1,8 @@
 # fair-psych-nlp
 Dataset and code for fair psychometric NLP.
 
+The data collection protocol for this project was approved by the University of Virginia IRB-SBS under SBS Number 2017014300.
+
 If you use this repository please cite the accompanying paper:
 
 ```
